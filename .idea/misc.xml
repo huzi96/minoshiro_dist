@@ -10,8 +10,5 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/minoshiro/templates/flat_library/complete/flat.json" />
-  </component>
   <component name="ProjectRootManager" version="2" />
 </project>
