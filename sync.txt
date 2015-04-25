@@ -1,3 +1,4 @@
 cd /var/www/html/
 -put -r ./minoshiro/
+
 quit
