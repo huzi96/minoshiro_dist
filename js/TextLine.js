@@ -101,7 +101,10 @@ define(['createjs'], function(createjs) {
     {
         var def = $.Deferred();
         //def.resolve();
+        var localurl='pcs.1.1.php?';
+        var remoteurl='http://1.minoshiro.sinaapp.com/pcs.1.1.php?';
 
+        var tryerror=0;
         var onsucess = function(data){
 
             /*debug
@@ -110,20 +113,39 @@ define(['createjs'], function(createjs) {
              */
 
             //here we assign base64 to img.src, so it is not necessary to treat it in async way
-            var img = document.createElement('img');
-            img.src = data;
-
-            img.onload = function() {
-                img.onload = null;
-                p.trimPic(img);
-                def.resolve(img);
+            if(data[0]=='<'&&tryerror<100)//if the local php server is not valid then try a remote server
+            {
+                tryerror++;
+                console.log("try remote");
+                $.ajax({
+                    url: remoteurl
+                    +'text=' + encodeURI(t.text)
+                    +'&dir=' + t.dir
+                    +'&space=' + t.letterSpacing
+                    +'&font=' + t.fontFamily
+                    +'&size=' + t.fontSize
+                    +'&color=' + t.color,
+                    success: onsucess
+                });
             }
+            else if(tryerror<100)
+            {
+                var img = document.createElement('img');
+                img.src = data;
+
+                img.onload = function() {
+                    img.onload = null;
+                    p.trimPic(img);
+                    def.resolve(img);
+                }
+            }
+
         }
 
         //console.log('text=' + encodeURI(t.text));
 
         $.ajax({
-            url: 'pcs.1.1.php?'
+            url: localurl
             +'text=' + encodeURI(t.text)
             +'&dir=' + t.dir
             +'&space=' + t.letterSpacing
@@ -132,6 +154,7 @@ define(['createjs'], function(createjs) {
             +'&color=' + t.color,
             success: onsucess
         })
+
 
         return def.promise();
     }
